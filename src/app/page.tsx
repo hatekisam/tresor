@@ -1,6 +1,7 @@
 import LoginForm from '@/components/Login/Form'
 import Navbar from '@/components/NavBar/Navbar'
 import Image from 'next/image'
+import Link from 'next/link'
 
 export default function Home() {
   return (
@@ -13,7 +14,7 @@ export default function Home() {
           <LoginForm />
           <p className='text-[#4343436D] font-medium text-sm text-left'>Rwanda Coding Academy presents a streamlined Student and School Management System for students, parents, and staff. Easily access and oversee attendance, grades, assignments, and communication through our secure login. Real-time updates and notifications keep you informed, making your educational journey at Rwanda Coding Academy efficient and seamless.
           </p>
-          <button className='float-left text-[#52387387] my-1.5'>Read more...</button>
+          <Link href={""} className='float-left text-[#52387387] my-1.5'>Read more...</Link>
         </div>
       </div>
     </div>

@@ -22,27 +22,23 @@ const LoginForm = () => {
         })
         const router = useRouter()
         const onSubmit = async (data: any) => {
-                console.log(data)
                 setLoading(true);
-                try {
-                        axios.post(`${backend}/auth/login`, data).then((res) => {
-                                toast.success(res.data.message)
-                                localStorage.setItem('token', res.data.data.refresh_token)
-                                console.log(res)
-                                if (res.data.data.user.roles[0].role_name === 'admin') {
-                                        router.push("/staff")
-                                } else if (res.data.data.user.roles[0].role_name === "STUDENT") {
-                                        router.push("/student")
-                                }
-                        }).catch((err) => {
-                                console.log(err);
-                        })
+                console.log("set more ladfasdfas")
+                axios.post(`${backend}/auth/login`, data).then((res) => {
+                        toast.success(res.data.message)
+                        localStorage.setItem('token', res.data.data.refresh_token)
+                        console.log(res)
+                        if (res.data.data.user.roles[0].role_name === 'admin') {
+                                router.push("/staff")
+                        } else if (res.data.data.user.roles[0].role_name === "STUDENT") {
+                                router.push("/student")
+                        }
+                }).catch((err) => {
+                        console.log(err);
+                        toast.error("Error logging in")
+                }).finally(() => {
                         setLoading(false)
-                }
-                catch (err) {
-                        setLoading(false)
-                        toast.error("Error while logging in")
-                }
+                })
         }
         return (
                 <form onSubmit={handleSubmit(onSubmit)} >

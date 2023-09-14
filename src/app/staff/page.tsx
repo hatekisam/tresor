@@ -1,9 +1,9 @@
 import React from 'react'
 import newOne from "../../assets/newOne.jpg"
 import newTwo from "../../assets/newTwo.jpg"
-import ProjectsTable from '@/components/Projects/ProjectsTable'
 import AdminGraph from '@/components/Graphs/AdminGraph'
 import Announcement from '@/components/Announcement/Announcement'
+import ProjectsTable from '@/components/HomePage/ProjectsTable'
 
 const AdminDashboard = () => {
         return (
