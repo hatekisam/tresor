@@ -1,5 +1,5 @@
 "use client"
-import FileDropZone from '@/components/dropzone/FileDrop'
+import FileDropZone from '@/components/FileDrop/FileDropZone';
 import React from 'react'
 
 const PhotoInput = () => {
