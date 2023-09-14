@@ -1,4 +1,4 @@
-import FileDropZone from '@/components/FileDrop/FileDrop'
+
 import React from 'react'
 
 const Profile = () => {
