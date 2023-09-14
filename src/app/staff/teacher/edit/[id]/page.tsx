@@ -1,7 +1,7 @@
 import React from 'react'
-import ProfileInput from '../ProfileInput';
+import ProfileInput from '../../ProfileInput'
 
-const NewStudent = () => {
+const Edit = () => {
         return (
                 <div className='w-full h-full overflow-y-auto overflow-x-hidden p-2 text-sm'>
                         < h2 className='text-[17px] font-medium  text-[rgba(0,0,0,0.7)] my-2' >Register New Student</h2 >
@@ -47,4 +47,4 @@ const NewStudent = () => {
         )
 }
 
-export default NewStudent
+export default Edit
