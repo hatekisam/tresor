@@ -1,15 +1,13 @@
 "use client"
 import React, { useEffect, useState } from 'react'
-import sampleImage from "../../../assets/assets/newOne.png"
-// import {projects} from "../../../data/projects"
 import axios from "axios"
 import { backend } from '@/utils/constants'
 import StudentProject from '@/components/Project/StudentProject'
 
 const AdminInnovation = () => {
         const [projects, setProjects] = useState<any>([])
-        const token = localStorage.getItem("token")
         useEffect(()=>{
+                const token = localStorage.getItem("token")
                 axios.get(`${backend}/projects/all`,{
                         headers: {
                                 Authorization: `Bearer ${token}`
