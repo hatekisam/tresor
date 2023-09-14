@@ -26,19 +26,17 @@ const LoginForm = () => {
                 setLoading(true);
                 try {
                         axios.post(`${backend}/auth/login`, data).then((res) => {
+                                toast.success(res.data.message)
+                                localStorage.setItem('token', res.data.data.refresh_token)
                                 console.log(res)
+                                if (res.data.data.user.roles[0].role_name === 'admin') {
+                                        router.push("/staff")
+                                } else if (res.data.data.user.roles[0].role_name === "STUDENT") {
+                                        router.push("/student")
+                                }
                         }).catch((err) => {
                                 console.log(err);
                         })
-                        // if (!(loggedInUser instanceof Error)) {
-                        //         toast.success(loggedInUser.message.toString())
-                        //         if (loggedInUser.data.user.roles[0].role_name === 'admin') {
-                        //                 router.push("/staff")
-                        //         } else if (loggedInUser.data.user.roles[0].role_name === "STUDENT") {
-                        //                 localStorage.setItem("token", JSON.stringify(loggedInUser.data));
-                        //                 router.push("/student")
-                        //         }
-                        // }
                         setLoading(false)
                 }
                 catch (err) {
