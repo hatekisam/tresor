@@ -23,19 +23,23 @@ const LoginForm = () => {
         const router = useRouter()
         const onSubmit = async (data: any) => {
                 setLoading(true);
-                console.log("set more ladfasdfas")
+                console.log(data)
                 axios.post(`${backend}/auth/login`, data).then((res) => {
-                        toast.success(res.data.message)
-                        localStorage.setItem('token', res.data.data.refresh_token)
                         console.log(res)
-                        if (res.data.data.user.roles[0].role_name === 'admin') {
+                        localStorage.setItem('token', res.data.data.refresh_token)
+                        if (res.data.data.user.roles[0].role_name === 'ADMIN') {
                                 router.push("/staff")
                         } else if (res.data.data.user.roles[0].role_name === "STUDENT") {
                                 router.push("/student")
                         }
+                        toast.success(res.data.message)
                 }).catch((err) => {
-                        console.log(err);
-                        toast.error("Error logging in")
+                        console.log(err)
+                        if (err.response.data.message === 'Invalid email or password') {
+                                toast.error("Invalid email or password")
+                        } else {
+                                toast.error("Error logging in")
+                        }
                 }).finally(() => {
                         setLoading(false)
                 })

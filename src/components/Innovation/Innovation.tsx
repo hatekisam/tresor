@@ -39,25 +39,25 @@ const Innovation = ({ id, image, date, title, content, tags }: Props) => {
                                         <div className="block sm:block  h-full w-[30%] md:w-[25%]  rounded-lg bg-slate-100"></div>
                                         <div>
                                                 <p className='font-bold text-base'>{title}</p>
-                                                <p className='text-gray-700'>{date.toLocaleDateString()}</p>
+                                                {/* <p className='text-gray-700'>{date.toLocaleDateString()}</p> */}
                                                 <div className="my-1 flex gap-1 flex-wrap ">
-                                                        {tags.map((tag, i) => {
+                                                        {/* {tags.map((tag, i) => {
                                                                 return (
                                                                         <p key={i} className='border px-2  py-1 rounded-full'>{tag}</p>
                                                                 )
-                                                        })}
+                                                        })} */}
                                                 </div>
                                         </div>
                                 </div>
                                 <div className='my-2 w-[70%] md:w-[75%]'>
                                         <p className='hidden sm:block font-bold text-base'>{title}</p>
-                                        <p className= ' hidden sm:block text-gray-700'>{date.toLocaleDateString()}</p>
+                                        {/* <p className= ' hidden sm:block text-gray-700'>{date.toLocaleDateString()}</p> */}
                                         <div className="hidden sm:flex  my-1 gap-1 flex-wrap ">
-                                                {tags.map((tag, i) => {
+                                                {/* {tags.map((tag, i) => {
                                                         return (
                                                                 <p key={i} className='border px-2  py-1 rounded-full'>{tag}</p>
                                                         )
-                                                })}
+                                                })} */}
                                         </div>
                                         <p>{content}</p>
                                 </div>

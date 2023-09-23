@@ -1,10 +1,35 @@
 "use client"
+import { backend } from '@/utils/constants'
+import axios from 'axios'
 import Image from 'next/image'
 import { useParams } from 'next/navigation'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 
 const OneInnovation = () => {
         const params = useParams()
+        const [project, setProject] = useState<any>([])
+        const [image, setImage] = useState<any>()
+        useEffect(() => {
+                const token = localStorage.getItem("token")
+                axios.get(`${backend}/projects/${params.id}`, {
+                        headers: {
+                                Authorization: `Bearer ${token}`
+                        }
+                })
+                        .then(res => {
+                                console.log(res.data.image)
+                                axios.get(`${backend}/files/${res.data.image}`, {
+                                        headers: {
+                                                Authorization: `Bearer ${token}`
+                                        }
+                                })
+                                        .then(res => {
+                                                console.log(res.data)
+                                                setImage(res.data)
+                                        })
+                                setProject(res.data)
+                        })
+        }, [])
         const innovation = {
                 id: 1,
                 title: "Smart Home Automation System",
@@ -19,22 +44,23 @@ const OneInnovation = () => {
                                 <div className='relative border border-[#ccc] py-2 px-1 h-[200px] rounded-lg  w-full  flex flex-row gap-2  bg-[rgba(67,67,67,0.09)] '>
                                         <div className="absolute right-0 bottom-0 p-1">
                                                 <div className="p-1 flex flex-row gap-2 text-[#523873] bg-white rounded-full">
-                                                        {innovation.tags.map((tag, i) => {
+                                                        {/* {innovation.tags.map((tag, i) => {
                                                                 return (
                                                                         <p key={i} className='border border-black px-2  py-1 bg-[rgba(67,67,67,0.09)]  rounded-full'>{tag}</p>
                                                                 )
-                                                        })}
+                                                        })} */}
                                                 </div>
                                         </div>
+                                        {/* <Image  src={project.image} width={100} height={100} alt=''/> */}
                                 </div>
                                 <div className='border-b-2 my-2 p-2'>
                                         <div className="flex justify-between items-center">
-                                                <p className="text-lg font-bold my-2">{innovation.title}</p>
+                                                <p className="text-lg font-bold my-2">{project.name}</p>
                                                 <button className='p-1 rounded-full bg-white'>
                                                         <Image src="/svg/love.svg" alt='' width={30} height={30} />
                                                 </button>
                                         </div>
-                                        <p className="text-gray-700 ">{innovation.date.toLocaleDateString()}</p>
+                                        <p className="text-gray-700 ">{new Date(project.createdAt).toLocaleDateString()}</p>
                                         <div className="flex flex-row justify-between  text-gray-700 mt-3">
                                                 <p>1000 Appreciations</p>
                                                 <p>100 Comments</p>
@@ -43,7 +69,7 @@ const OneInnovation = () => {
                                 </div>
                                 <div className='relative min-h-[150px] my-2 p-2'>
                                         <p className="text-base font-bold my-2">More About This Innovation</p>
-                                        <p className="text-gray-700 ">{innovation.description}</p>
+                                        <p className="text-gray-700 ">{project.description}</p>
                                         <div className="absolute right-0 bottom-0 p-2">
                                                 <div className='flex flex-col gap-1 border border-[#ccc] p-1 rounded-lg'>
                                                         <svg xmlns="http://www.w3.org/2000/svg" width="21" height="18" viewBox="0 0 21 18" fill="none" className='cursor-pointer w-4'>

@@ -20,7 +20,7 @@ interface Props {
         id: number
 
 }
-const StudentProject = ({ titleHeader, time, content, appreciations, FMessages, publisher, id }: Props) => {
+const AdminProject = ({ titleHeader, time, content, appreciations, FMessages, publisher, id }: Props) => {
         const date = time.split("T")[0]
         return (
                 // min-h-[300px]
@@ -47,7 +47,7 @@ const StudentProject = ({ titleHeader, time, content, appreciations, FMessages, 
                         </div>
 
                         <div className="w-16 h-[90%] flex flex-col items-center justify-evenly bg-[#43434317] mx-2 rounded-lg">
-                                <Link href={`/student/innovations/${id}`}><Image src={eyeIcon} alt="" ></Image></Link>
+                                <Link href={`/staff/innovations/${id}`}><Image src={eyeIcon} alt="" ></Image></Link>
                                 <Image src={editIcon} alt=""></Image>
                                 <Image src={deleteIcon} alt=""></Image>
                         </div>
@@ -56,4 +56,4 @@ const StudentProject = ({ titleHeader, time, content, appreciations, FMessages, 
 }
 
 
-export default StudentProject
+export default AdminProject

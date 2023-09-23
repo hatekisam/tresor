@@ -9,51 +9,72 @@ import axios from 'axios';
 import { toast } from 'react-hot-toast';
 import { useRouter } from 'next/navigation';
 import { backend } from '@/utils/constants';
+import FileDropZone from '@/components/FileDrop/FileDropZone';
 const AdminCustomization: React.FC = () => {
         const navigate = useRouter()
         const [loading, setLoading] = useState(false)
+        const [images, setImages] = useState<{ name: string, image: File }[]>()
         const schema = yup.object().shape({
-                aboutUsText: yup.string().notRequired(),
-                innovationText: yup.string().notRequired(),
-                yearsFoundation: yup.number().nullable().notRequired(),
-                stakePartener: yup.number().nullable().notRequired(),
-                students: yup.number().nullable().notRequired(),
-                startups: yup.number().nullable().notRequired(),
-                email: yup.string().notRequired(),
-                slackLink: yup.string().notRequired(),
-                discordServer: yup.string().notRequired(),
-                facebook: yup.string().notRequired(),
-                instargram: yup.string().notRequired(),
-                phone: yup.string().notRequired(),
-                twitter: yup.string().notRequired(),
-                linkedIn: yup.string().notRequired(),
-                github: yup.string().notRequired(),
+                aboutUsText: yup.string().optional(),
+                innovationText: yup.string().optional(),
+                yearsFoundation: yup.number().nullable().optional(),
+                stakePartener: yup.number().nullable().optional(),
+                students: yup.number().nullable().optional(),
+                startups: yup.number().nullable().optional(),
+                email: yup.string().optional(),
+                slackLink: yup.string().optional(),
+                discordServer: yup.string().optional(),
+                facebook: yup.string().optional(),
+                instargram: yup.string().optional(),
+                phone: yup.string().optional(),
+                twitter: yup.string().optional(),
+                linkedIn: yup.string().optional(),
+                github: yup.string().optional(),
         })
         const { handleSubmit, register, formState: { errors } } = useForm({
                 resolver: yupResolver(schema)
         })
         const onSubmit = (data: any) => {
                 const web = {
-                        yearsOfFoundation: data.yearsFoundation,
-                        studentsNumber: data.students,
-                        startupsNumber: data.startups,
+                        yearsOfFoundation: data.yearsFoundation.toString(),
+                        studentsNumber: data.students.toString(),
+                        startupsNumber: data.startups.toString(),
                         aboutUsText: data.aboutUsText,
                         innovationText: data.innovationText,
                         schoolEmail: data.email,
                         slackWorkspaceLink: data.slackLink,
                         DiscordServerLink: data.discordServer,
                         FacebookLink: data.facebook,
-                        snapchatLink: '',
+                        snapchatLink: 'brabrabra',
                         InstgramLink: data.instargram,
                         schoolPhoneNumber: data.phone,
                         TwitterLink: data.twitter,
                         LinkedInLink: data.linkedIn,
                         githubLink: data.github,
                 }
+                const formData = new FormData();
+                formData.append('yearsOfFoundation', data.yearsFoundation?.toString())
+                formData.append('studentsNumber', data.studentsNumber?.toString())
+                formData.append('startupsNumber', data.startupsNumber?.toString())
+                formData.append('aboutUsText', data.aboutUsText?.toString())
+                formData.append('innovationText', data.innovationText?.toString())
+                formData.append('schoolEmail', data.email?.toString())
+                formData.append('slackWorkspaceLink', data.slackLink?.toString())
+                formData.append('DiscordServerLink', data.discordServer?.toString())
+                formData.append('FacebookLink', data.facebook?.toString())
+                formData.append('snapchatLink', 'fsdfasdfasdf'?.toString())
+                formData.append('InstgramLink', data.instargram?.toString())
+                formData.append('schoolPhoneNumber', data.phone?.toString())
+                formData.append('TwitterLink', data.twitter?.toString())
+                formData.append('LinkedInLink', data.linkedIn?.toString())
+                formData.append('githubLink', data.github?.toString())
+                images?.map((img) => {
+                        formData.append(img.name, img.image)
+                })
                 setLoading(true)
                 const token = localStorage.getItem("token")
                 console.log(token)
-                axios.post(`${backend}/web-content/update`, web, {
+                axios.post(`${backend}/web-content/create`, formData, {
                         headers: {
                                 Authorization: `Bearer ${token}`
                         }
@@ -68,11 +89,26 @@ const AdminCustomization: React.FC = () => {
                         toast.error("Error Updating the Website")
                 })
         }
+        const handleFilesSelected = (filetype: string, files: File[]) => {
+                const newImage = {
+                        name: filetype,
+                        image: files[0] // Use "image" instead of "files"
+                };
+                setImages((prevImages) => (prevImages ? [...prevImages, newImage] : [newImage])); // Wrap newImage in an array
+        };
+
         return (
                 <form onSubmit={handleSubmit(onSubmit)} className='w-full h-full overflow-y-auto overflow-x-hidden p-2 text-sm'>
                         <h2 className='text-[17px] font-medium  text-[rgba(0,0,0,0.7)] my-2'>Customization of the Website</h2>
                         <p className='text-[rgba(67,67,67,0.43)] my-2'>Landing Page</p>
-                        <DropPart />
+                        <div className="my-2 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 grid-rows-2 gap-3">
+                                <FileDropZone fileType='landingBurnerImage' onFilesSelected={handleFilesSelected} title='Main Landing Page Barner Image' />
+                                <FileDropZone fileType='abouUsImage' onFilesSelected={handleFilesSelected} title='Main Landing About Us Large Image' />
+                                {/* <FileDropZone fileType='aboutSmall' onFilesSelected={handleFilesSelected} title='Main Landing About Us Smaller Image' /> */}
+                                <FileDropZone fileType='innovationMainImage' onFilesSelected={handleFilesSelected} title='Innovations Images maximum 10 shots' />
+                                <FileDropZone fileType='newsLetterCardImage' onFilesSelected={handleFilesSelected} title='News Letter small Card Image' />
+                                <FileDropZone fileType='newsLetterLargeImage' onFilesSelected={handleFilesSelected} title='News Letter large Card Image' />
+                        </div>
                         <div className="my-10 flex flex-col md:flex-row gap-2 md:gap-5">
                                 <div className='w-full md:w-[50%]'>
                                         <p className='text-[rgba(67,67,67,0.43)] my-2'>About Us Text</p>
