@@ -21,9 +21,11 @@ export default function RootLayout({
         <title>Admin Portal</title>
         <link rel='icon' href='/favicon.png' />
       </head>
-      <body  className={poppins.className}>
+      <body  className={`${poppins.className} bg-[#F7F8FD]`}>
+        <div className='bg-[#F7F8FD] w-full h-full'>
         {children}
-        <Toaster />
+        <Toaster position="bottom-left"/>
+        </div>
       </body>
     </html>
   )

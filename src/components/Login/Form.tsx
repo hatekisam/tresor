@@ -1,6 +1,6 @@
 "use client";
 import Link from "next/link";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
@@ -11,6 +11,21 @@ import axios from "axios";
 import { backend } from "@/utils/constants";
 
 const LoginForm = () => {
+        const router = useRouter()
+        useEffect(()=>{
+                const auth = async() =>{
+                        const token  =  await localStorage.getItem('token');
+                        const role  =  await localStorage.getItem('role');
+                        if(token){
+                                if(role === "ADMIN"){
+                                        router.push("/staff")
+                                }else{
+                                        router.push("/student")
+                                }
+                        }
+                }
+                auth();
+        },[])
         const [loading, setLoading] = useState(false)
         const [showingPw, setShowingPw] = useState(true)
         const schema = yup.object().shape({
@@ -20,19 +35,18 @@ const LoginForm = () => {
         const { register, handleSubmit, formState: { errors } } = useForm({
                 resolver: yupResolver(schema)
         })
-        const router = useRouter()
+        
         const onSubmit = async (data: any) => {
                 setLoading(true);
                 console.log(data)
                 axios.post(`${backend}/auth/login`, data).then((res) => {
-                        console.log(res)
                         localStorage.setItem('token', res.data.data.refresh_token)
+                        localStorage.setItem('role', res.data.data.user.roles[0].role_name)
                         if (res.data.data.user.roles[0].role_name === 'ADMIN') {
                                 router.push("/staff")
                         } else if (res.data.data.user.roles[0].role_name === "STUDENT") {
                                 router.push("/student")
                         }
-                        toast.success(res.data.message)
                 }).catch((err) => {
                         console.log(err)
                         if (err.response.data.message === 'Invalid email or password') {
@@ -63,7 +77,7 @@ const LoginForm = () => {
                                 </div>
                                 <Link href={"/forgot-password"} className='font-medium text-[#523873] text-sm'>Forgot my password</Link>
                         </div>
-                        {!loading ? <input type="submit" value="Login" className='cursor-pointer rounded-full border border-[#2955C56E] border-opacity-43 bg-[#523873] text-white px-[3.5rem]  py-3 my-2.5 text-[1rem] w-[60%]' /> : <button className='cursor-pointer rounded-full border border-[#2955C56E] border-opacity-43 bg-[#523873] text-white px-[3.5rem]  py-3 my-2.5 text-[1rem] w-[60%]'><ClipLoader color='white' size={10} /></button>}
+                        {!loading ? <input type="submit" value="Login" className='cursor-pointer rounded-full border border-[#2955C56E] border-opacity-43 bg-[#523873] text-white px-[3.5rem]  py-3 my-2.5 text-[1rem] w-[60%]' /> : <button className='cursor-pointer rounded-full border border-[#2955C56E] border-opacity-43 bg-[#523873] text-white px-[3.5rem]  py-3 my-2.5 text-[1rem] w-[60%]'><ClipLoader color='white' size={15} /></button>}
                 </form>
         )
 }
